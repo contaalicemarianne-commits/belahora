@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BelaHora</title>
+<meta name="theme-color" content="#0e0c14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BelaHora">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  html,body{margin:0;height:100%;background:#0e0c14;overflow:hidden}
+  iframe{position:fixed;inset:0;width:100%;height:100%;border:0}
+  #splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#ece9f3;font-family:Segoe UI,Arial,sans-serif;gap:14px;transition:opacity .4s}
+  #splash img{width:96px;height:96px;border-radius:24px}
+  #splash b{font-size:26px}
+</style>
+</head>
+<body>
+<div id="splash"><img src="icon-192.png" alt=""><b>BelaHora</b></div>
+<iframe id="app" title="BelaHora" allow="clipboard-write; clipboard-read; camera; geolocation"></iframe>
+<script>
+  /* Endereço da implantação do Apps Script (URL /exec). Se um dia criar uma NOVA implantação, troque aqui. */
+  var APP_URL = 'https://script.google.com/macros/s/AKfycbzEfCT4TQNK8HnBNP8DYb7XNHbgXFTshdE46tNS1fZkLqBHFaI7X76yesyXgwB4HBXO/exec';
+
+  // Repassa tudo que veio no link (?s=salão, ?presenca=…, ?avaliar=…, ?promo=…) para o sistema.
+  var params = new URLSearchParams(location.search);
+  var slug = params.get('s');
+  // O salão fica guardado para o ícone do celular abrir sempre no mesmo salão.
+  try { if (slug) localStorage.setItem('bh_slug', slug); } catch (e) {}
+  if (!location.search) {
+    try { slug = localStorage.getItem('bh_slug') || localStorage.getItem('am_slug'); } catch (e) {}
+    if (slug) params.set('s', slug);
+  }
+  var qs = params.toString();
+  var f = document.getElementById('app');
+  f.src = APP_URL + (qs ? '?' + qs : '');
+  f.onload = function () { var s = document.getElementById('splash'); s.style.opacity = 0; setTimeout(function () { s.remove(); }, 400); };
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+</script>
+</body>
+</html>
