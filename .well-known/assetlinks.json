@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "br.com.allyteam.belahora",
+        "sha256_cert_fingerprints": ["30:B4:3E:A6:6E:CD:B5:1E:E0:AE:14:14:71:F9:91:80:1D:FB:6D:D3:DF:0F:37:E2:70:E1:4A:73:D8:98:FE:94"]
+      }
+    }]
